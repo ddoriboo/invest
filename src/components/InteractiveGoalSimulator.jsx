@@ -149,9 +149,9 @@ const InteractiveGoalSimulator = ({
         {/* 2-Column 레이아웃 */}
         <div className="flex-1 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-5 h-full gap-6 p-6">
-            {/* 왼쪽 컬럼: 컨트롤 패널 (Sticky) */}
-            <div className="md:col-span-2 overflow-y-auto">
-              <div className="sticky top-0 space-y-6">
+            {/* 왼쪽 컬럼: 컨트롤 패널 (Scrollable) */}
+            <div className="md:col-span-2 overflow-y-auto pr-2">
+              <div className="space-y-6 pb-6">
                 {/* 파라미터 조정 패널 */}
                 <div className="card-premium p-5">
                   <div className="flex items-center gap-2 mb-5">
@@ -334,7 +334,8 @@ const InteractiveGoalSimulator = ({
             </div>
 
             {/* 오른쪽 컬럼: 결과 영역 (Scrollable) */}
-            <div className="md:col-span-3 overflow-y-auto space-y-6">
+            <div className="md:col-span-3 overflow-y-auto pl-2">
+              <div className="space-y-6 pb-6">
               {/* 핵심 지표 요약 */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
@@ -412,6 +413,7 @@ const InteractiveGoalSimulator = ({
                   </div>
                 </div>
               )}
+              </div>
             </div>
           </div>
         </div>
