@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Target, TrendingUp, Calculator, Brain, CheckCircle, AlertCircle, Info, DollarSign, Calendar, BarChart3, Zap, Settings } from 'lucide-react';
 import { getDividendScheduleData } from '../utils/dividendData';
+import ScenarioComparisonChart from './ScenarioComparisonChart';
+import { simulateMultipleScenarios, calculateRequiredMonthlyInvestment } from '../utils/simulationEngine';
 
 // 목표 계산 엔진
 const GoalCalculationEngine = {
@@ -444,10 +446,22 @@ const Step2PersonalInfo = ({ personalInfo, setPersonalInfo, onNext, onPrev }) =>
   );
 };
 
-const Step3GoalSetting = ({ goalType, personalInfo, goalSettings, setGoalSettings, onNext, onPrev }) => {
+const Step3GoalSetting = ({ goalType, personalInfo, goalSettings, setGoalSettings, onNext, onPrev, currentAsset = 112000000 }) => {
   const handleGoalChange = (field, value) => {
     setGoalSettings(prev => ({ ...prev, [field]: value }));
   };
+
+  // 실시간 시나리오 시뮬레이션
+  const scenarios = useMemo(() => {
+    if (!personalInfo.monthlyInvestment || !goalSettings.timeHorizon) return null;
+
+    return simulateMultipleScenarios({
+      currentAsset: currentAsset,
+      monthlyInvestment: personalInfo.monthlyInvestment,
+      years: goalSettings.timeHorizon,
+      dividendYield: 4.5
+    });
+  }, [personalInfo.monthlyInvestment, goalSettings.timeHorizon, currentAsset]);
 
   // AI 추천값 계산 (실제 포트폴리오 데이터 사용)
   const aiRecommendation = useMemo(() => {
@@ -619,6 +633,16 @@ const Step3GoalSetting = ({ goalType, personalInfo, goalSettings, setGoalSetting
           </select>
         </div>
       </div>
+
+      {/* 실시간 시뮬레이션 차트 */}
+      {scenarios && (
+        <div className="mt-6">
+          <ScenarioComparisonChart
+            scenarios={scenarios}
+            viewType={goalType === 'dividend' ? 'dividend' : 'asset'}
+          />
+        </div>
+      )}
 
       <div className="flex justify-between pt-6">
         <button

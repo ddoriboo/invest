@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { Target, TrendingUp, Calendar, AlertCircle, CheckCircle, Clock, Zap, Settings, BarChart3 } from 'lucide-react';
+import { Target, TrendingUp, Calendar, AlertCircle, CheckCircle, Clock, Zap, Settings, BarChart3, Calculator } from 'lucide-react';
 import { getDividendScheduleData } from '../utils/dividendData';
+import InteractiveGoalSimulator from './InteractiveGoalSimulator';
 
 const GoalTrackingDashboard = ({
   goals = [],
@@ -11,6 +12,8 @@ const GoalTrackingDashboard = ({
 }) => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('1Y');
   const [selectedGoal, setSelectedGoal] = useState(null);
+  const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
+  const [simulatorGoal, setSimulatorGoal] = useState(null);
 
   // 배당 데이터 가져오기
   const { calendarData, monthlyDividendSchedule } = getDividendScheduleData();
@@ -309,15 +312,41 @@ const GoalTrackingDashboard = ({
                   <Calendar className="w-4 h-4 inline mr-1" />
                   일정 보기
                 </button>
-                <button className="flex-1 px-3 py-2 rounded-lg bg-green-50 text-green-600 text-sm font-medium hover:bg-green-100 transition-colors">
-                  <TrendingUp className="w-4 h-4 inline mr-1" />
-                  투자 전략
+                <button
+                  onClick={() => {
+                    setSimulatorGoal(goal);
+                    setIsSimulatorOpen(true);
+                  }}
+                  className="flex-1 px-3 py-2 rounded-lg bg-green-50 text-green-600 text-sm font-medium hover:bg-green-100 transition-colors"
+                >
+                  <Calculator className="w-4 h-4 inline mr-1" />
+                  재시뮬레이션
                 </button>
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* 인터랙티브 시뮬레이터 모달 */}
+      {simulatorGoal && (
+        <InteractiveGoalSimulator
+          isOpen={isSimulatorOpen}
+          onClose={() => {
+            setIsSimulatorOpen(false);
+            setSimulatorGoal(null);
+          }}
+          goalType={simulatorGoal.type}
+          initialParams={{
+            currentAsset: currentPortfolio.totalAsset || 112000000,
+            monthlyInvestment: simulatorGoal.monthlyInvestment || 800000,
+            targetAsset: simulatorGoal.targetAmount,
+            targetMonthlyDividend: simulatorGoal.targetAmount,
+            dividendYield: 4.5,
+            years: Math.ceil((new Date(simulatorGoal.targetDate) - new Date()) / (1000 * 60 * 60 * 24 * 365))
+          }}
+        />
+      )}
     </div>
   );
 };

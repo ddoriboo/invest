@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TrendingUp, Target, Calendar } from 'lucide-react';
+import InteractiveGoalSimulator from './InteractiveGoalSimulator';
 
 // 배당 목표 위젯 컴포넌트
-const DividendGoalWidget = ({ monthlyDividend = 1200000, targetMonthlyDividend = 2000000 }) => {
+const DividendGoalWidget = ({ monthlyDividend = 1200000, targetMonthlyDividend = 2000000, currentAsset = 112000000 }) => {
+  const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
   const achievementRate = (monthlyDividend / targetMonthlyDividend) * 100;
   const remainingAmount = targetMonthlyDividend - monthlyDividend;
   const monthlyIncome = 4500000; // 월 소득 (실제로는 props로 받아야 함)
@@ -95,11 +97,28 @@ const DividendGoalWidget = ({ monthlyDividend = 1200000, targetMonthlyDividend =
           <Calendar className="w-4 h-4 inline mr-1" />
           배당 캘린더
         </button>
-        <button className="px-4 py-2 rounded-lg bg-blue-50 text-blue-600 text-sm font-medium hover:bg-blue-100 transition-colors">
+        <button
+          onClick={() => setIsSimulatorOpen(true)}
+          className="px-4 py-2 rounded-lg bg-blue-50 text-blue-600 text-sm font-medium hover:bg-blue-100 transition-colors"
+        >
           <TrendingUp className="w-4 h-4 inline mr-1" />
           투자 시뮬레이션
         </button>
       </div>
+
+      {/* 인터랙티브 시뮬레이터 모달 */}
+      <InteractiveGoalSimulator
+        isOpen={isSimulatorOpen}
+        onClose={() => setIsSimulatorOpen(false)}
+        goalType="dividend"
+        initialParams={{
+          currentAsset: currentAsset,
+          monthlyInvestment: monthlyAdditionalInvest,
+          targetMonthlyDividend: targetMonthlyDividend,
+          dividendYield: annualDividendYield * 100,
+          years: Math.ceil(monthsToGoal / 12)
+        }}
+      />
     </div>
   );
 };
