@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Building2, Briefcase, PiggyBank, ChevronDown, ChevronUp, Check, AlertCircle, Info } from 'lucide-react';
+import PensionLayerCard from './PensionLayerCard';
 
 const ThreeLayerPensionCard = ({
   pensionData = {},
@@ -145,48 +146,47 @@ const ThreeLayerPensionCard = ({
         </div>
       </div>
 
-      {/* 3층 구조 시각화 */}
-      <div className="space-y-3 mb-6">
-        {layers.map((layer) => {
-          const colorClasses = getColorClasses(layer.color);
-          const Icon = layer.icon;
-          const isActive = layer.status === 'active';
+      {/* 3층 구조 시각화 (수평 스크롤 레이어 카드) */}
+      <div className="mb-6">
+        <div className="overflow-x-auto pb-4">
+          <div className="flex gap-4">
+            {/* Layer 1: 국민연금 */}
+            <PensionLayerCard
+              layer={1}
+              title={layers[0].name}
+              badge={layers[0].badge}
+              status={layers[0].status}
+              currentBalance={0} // 국민연금은 잔액 개념 없음
+              expectedMonthlyPension={layers[0].amount}
+              startAge={65}
+              contributionYears={10}
+            />
 
-          return (
-            <div
-              key={layer.id}
-              className={`p-4 rounded-lg border-l-4 ${colorClasses.border} ${colorClasses.bg} transition-all hover:shadow-sm`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3 flex-1">
-                  <div className={`w-10 h-10 rounded-lg bg-white flex items-center justify-center`}>
-                    <Icon className={`w-5 h-5 ${colorClasses.icon}`} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded ${colorClasses.text} bg-white`}>
-                        {layer.badge}
-                      </span>
-                      <span className="text-sm font-semibold text-gray-800">{layer.name}</span>
-                      {isActive ? (
-                        <Check className="w-4 h-4 text-green-600" />
-                      ) : (
-                        <AlertCircle className="w-4 h-4 text-orange-500" />
-                      )}
-                    </div>
-                    <div className="text-xs text-gray-600">{layer.description}</div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-lg font-bold ${colorClasses.text}`}>
-                    {layer.amount > 0 ? `${(layer.amount / 10000).toFixed(0)}만원` : '-'}
-                  </div>
-                  <div className="text-xs text-gray-500">월 예상</div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            {/* Layer 2: 퇴직연금 */}
+            <PensionLayerCard
+              layer={2}
+              title={layers[1].name}
+              badge={layers[1].badge}
+              status={layers[1].status}
+              currentBalance={(dcPension.totalBalance || 0) + (irp.totalBalance || 0)}
+              expectedMonthlyPension={layers[1].amount}
+              startAge={60}
+              contributionYears={20}
+            />
+
+            {/* Layer 3: 개인연금 */}
+            <PensionLayerCard
+              layer={3}
+              title={layers[2].name}
+              badge={layers[2].badge}
+              status={layers[2].status}
+              currentBalance={pensionSavings.totalBalance || 0}
+              expectedMonthlyPension={layers[2].amount}
+              startAge={55}
+              contributionYears={20}
+            />
+          </div>
+        </div>
       </div>
 
       {/* 인포메이션 */}

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import InvestmentDashboard from './InvestmentDashboard';
 import StockIndexCard from './components/StockIndexCard';
 import DividendCalendar from './components/DividendCalendar';
-import { ChevronLeft, ChevronRight, BarChart3, Zap, TrendingUp, AlertTriangle, Target, DollarSign, X, ArrowRight, Bell, CheckCircle } from 'lucide-react';
+import PensionPage from './components/PensionPage';
+import { ChevronLeft, ChevronRight, BarChart3, Zap, TrendingUp, AlertTriangle, Target, DollarSign, X, ArrowRight, Bell, CheckCircle, Building2 } from 'lucide-react';
 
 // 좌측 사이드바 컴포넌트
 const Sidebar = ({ activeMenu, setActiveMenu, isCollapsed, setIsCollapsed }) => {
@@ -10,6 +11,7 @@ const Sidebar = ({ activeMenu, setActiveMenu, isCollapsed, setIsCollapsed }) => 
     { id: 'domestic', label: '국내주식' },
     { id: 'overseas', label: '해외주식' },
     { id: 'investment', label: '투자' },
+    { id: 'pension', label: '연금', icon: Building2 },
     { id: 'dividend', label: '배당캘린더' }
   ];
 
@@ -30,24 +32,28 @@ const Sidebar = ({ activeMenu, setActiveMenu, isCollapsed, setIsCollapsed }) => 
       </div>
 
       <nav className="flex-1 p-3">
-        {menuItems.map(item => (
-          <button
-            key={item.id}
-            onClick={() => setActiveMenu(item.id)}
-            className={`w-full px-3 py-3 mb-2 rounded-lg transition-all ${
-              activeMenu === item.id
-                ? 'bg-blue-50 text-blue-600 font-bold'
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-            }`}
-            title={isCollapsed ? item.label : ''}
-          >
-            {isCollapsed ? (
-              <span className="block text-xs">{item.label.substring(0, 2)}</span>
-            ) : (
-              <span className="text-center block">{item.label}</span>
-            )}
-          </button>
-        ))}
+        {menuItems.map(item => {
+          const Icon = item.icon;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveMenu(item.id)}
+              className={`w-full px-3 py-3 mb-2 rounded-lg transition-all flex items-center justify-center gap-2 ${
+                activeMenu === item.id
+                  ? 'bg-blue-50 text-blue-600 font-bold'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              }`}
+              title={isCollapsed ? item.label : ''}
+            >
+              {Icon && <Icon className="w-4 h-4" />}
+              {isCollapsed ? (
+                !Icon && <span className="block text-xs">{item.label.substring(0, 2)}</span>
+              ) : (
+                <span className={Icon ? '' : 'text-center block'}>{item.label}</span>
+              )}
+            </button>
+          );
+        })}
       </nav>
 
       {!isCollapsed && (
@@ -619,6 +625,7 @@ const OverseasStocks = () => {
   );
 };
 
+
 // 메인 App 컴포넌트
 const App = () => {
   const [activeMenu, setActiveMenu] = useState('investment');
@@ -632,6 +639,8 @@ const App = () => {
         return <DomesticStocks />;
       case 'overseas':
         return <OverseasStocks />;
+      case 'pension':
+        return <PensionPage />;
       case 'dividend':
         return <DividendCalendar />;
       case 'investment':

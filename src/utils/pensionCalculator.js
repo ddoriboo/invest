@@ -317,6 +317,91 @@ export const diagnosePensionCompleteness = (pensionData) => {
   return diagnosis;
 };
 
+/**
+ * 연금 수령액 최적화 계산
+ * 현재 납입액 대비 최적 납입액으로 증액 시 예상 수령액
+ */
+export const calculateOptimizedPension = ({
+  currentParams = {},
+  targetReturnRate = 6.0, // 목표 수익률
+  taxDeductionLimit = 9000000 // 세액공제 한도
+}) => {
+  const {
+    age = 35,
+    retirementAge = 60,
+    dcBalance = 0,
+    dcMonthlyContribution = 0,
+    irpBalance = 0,
+    irpMonthlyContribution = 0,
+    pensionSavingsBalance = 0,
+    pensionSavingsMonthly = 0
+  } = currentParams;
+
+  const yearsToRetirement = retirementAge - age;
+
+  // 세액공제 한도를 최대로 활용하는 최적 납입액
+  // 연금저축: 6백만원, IRP: 3백만원 (합계 9백만원)
+  const optimalPensionSavingsMonthly = 6000000 / 12; // 50만원
+  const optimalIrpMonthly = 3000000 / 12; // 25만원
+
+  // 최적화된 IRP 계산
+  const optimizedIrp = calculateIRP({
+    currentBalance: irpBalance,
+    monthlyContribution: optimalIrpMonthly,
+    annualReturn: targetReturnRate,
+    yearsToRetirement
+  });
+
+  // 최적화된 연금저축 계산
+  const optimizedPensionSavings = calculatePensionSavings({
+    currentBalance: pensionSavingsBalance,
+    monthlyPayment: optimalPensionSavingsMonthly,
+    annualReturn: targetReturnRate,
+    yearsToRetirement
+  });
+
+  // 최적화된 DC (현재 유지)
+  const optimizedDc = calculateDCPension({
+    currentBalance: dcBalance,
+    monthlyContribution: dcMonthlyContribution,
+    employerContribution: dcMonthlyContribution,
+    annualReturn: targetReturnRate,
+    yearsToRetirement
+  });
+
+  // 총 최적화된 월 수령액
+  const totalOptimizedMonthly =
+    optimizedDc.monthlyPension +
+    optimizedIrp.monthlyPension +
+    optimizedPensionSavings.monthlyPension;
+
+  // 현재 대비 증가분
+  const currentTotal =
+    (dcMonthlyContribution || 0) +
+    (irpMonthlyContribution || 0) +
+    (pensionSavingsMonthly || 0);
+
+  const optimalTotal =
+    (dcMonthlyContribution || 0) +
+    optimalIrpMonthly +
+    optimalPensionSavingsMonthly;
+
+  const monthlyIncrease = optimalTotal - currentTotal;
+
+  return {
+    optimizedIrp,
+    optimizedPensionSavings,
+    optimizedDc,
+    totalOptimizedMonthly,
+    monthlyIncrease,
+    recommendations: {
+      irpMonthly: optimalIrpMonthly,
+      pensionSavingsMonthly: optimalPensionSavingsMonthly,
+      dcMonthly: dcMonthlyContribution
+    }
+  };
+};
+
 export default {
   calculateNationalPension,
   calculateDCPension,
@@ -324,5 +409,6 @@ export default {
   calculatePensionSavings,
   calculateTaxDeduction,
   calculateRetirementIncome,
-  diagnosePensionCompleteness
+  diagnosePensionCompleteness,
+  calculateOptimizedPension
 };
