@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
-import { TrendingUp, TrendingDown, BarChart3, Settings, ArrowLeft, ChevronDown, ChevronUp, Target, Zap, AlertTriangle, DollarSign } from 'lucide-react';
+import { TrendingUp, TrendingDown, BarChart3, Settings, ArrowLeft, ChevronDown, ChevronUp, Target, Zap, AlertTriangle, DollarSign, Building2 } from 'lucide-react';
 import IntelligentGoalWizard from './components/IntelligentGoalWizard';
 import GoalTrackingDashboard from './components/GoalTrackingDashboard';
 import NudgeCarousel from './components/NudgeCarousel';
+import ThreeLayerPensionCard from './components/ThreeLayerPensionCard';
+import PensionDashboard from './components/PensionDashboard';
 
 // 공통 데이터 및 유틸리티
 const formatCurrency = (amount) => {
@@ -15,11 +17,11 @@ const formatPercentage = (rate) => {
 };
 
 // 1. 헤더 모듈
-const Header = ({ timeRange, setTimeRange }) => {
+const Header = ({ timeRange, setTimeRange, onOpenPension = () => {} }) => {
   return (
     <div className="flex justify-between items-center mb-10">
       <h1 className="text-display">내 자산 현황</h1>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-3 items-center">
         <select
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
@@ -32,6 +34,13 @@ const Header = ({ timeRange, setTimeRange }) => {
           <option value="quarterly">분기</option>
           <option value="yearly">연간</option>
         </select>
+        <button
+          onClick={onOpenPension}
+          className="p-3 card-premium hover:scale-105 transition-transform"
+          title="연금 플래너"
+        >
+          <Building2 className="w-6 h-6" style={{color: 'var(--accent-blue)'}} />
+        </button>
         <button className="p-3 card-premium hover:scale-105 transition-transform">
           <Settings className="w-6 h-6" style={{color: 'var(--text-secondary)'}} />
         </button>
@@ -705,6 +714,8 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
   const [selectedRealizedMonth, setSelectedRealizedMonth] = useState(null);
   const [goalType, setGoalType] = useState('asset');
   const [showGoalWizard, setShowGoalWizard] = useState(false);
+  const [isPensionDashboardOpen, setIsPensionDashboardOpen] = useState(false);
+  const [isPensionCardCollapsed, setIsPensionCardCollapsed] = useState(true);
   const [userGoals, setUserGoals] = useState([
     {
       id: 'goal-1',
@@ -952,7 +963,11 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
   const MainView = () => {
     return (
       <div className="relative">
-        <Header timeRange={timeRange} setTimeRange={setTimeRange} />
+        <Header
+          timeRange={timeRange}
+          setTimeRange={setTimeRange}
+          onOpenPension={() => setIsPensionDashboardOpen(true)}
+        />
 
         {/* 넛지 캐러셀 */}
         {carouselNudges.length > 0 && (
@@ -998,6 +1013,21 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
           />
 
           <AssetTrendBox assetTrendData={assetTrendData} nudgeData={nudgeData} />
+
+          {/* 연금 준비 현황 카드 */}
+          <div className="mt-6">
+            <ThreeLayerPensionCard
+              pensionData={{
+                nationalPension: { monthlyAmount: 1200000 },
+                dcPension: { totalBalance: 50000000, monthlyPension: 800000 },
+                irp: { totalBalance: 20000000, monthlyPension: 300000 },
+                pensionSavings: { totalBalance: 30000000, monthlyPension: 500000 }
+              }}
+              isCollapsed={isPensionCardCollapsed}
+              onToggle={() => setIsPensionCardCollapsed(!isPensionCardCollapsed)}
+              onOpenFullDashboard={() => setIsPensionDashboardOpen(true)}
+            />
+          </div>
         </div>
       </div>
     );
@@ -1763,6 +1793,14 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
           onClose={() => setShowGoalWizard(false)}
         />
       )}
+
+      {/* 연금 종합 플래너 모달 */}
+      <PensionDashboard
+        isOpen={isPensionDashboardOpen}
+        onClose={() => setIsPensionDashboardOpen(false)}
+        currentInvestmentAssets={totalAssets}
+        monthlyDividend={monthlyDividend}
+      />
     </div>
   );
 };
