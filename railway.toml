@@ -1,0 +1,6 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+healthcheck = "/health"
+restartPolicyType = "never"
