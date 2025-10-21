@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>네이버 연금 - 55세 이상 수령가이드</title>
+    <!-- Pretendard Font -->
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Naver Pay Color System */
+            --npay-green: #00DE5A;
+            --naver-green: #03C75A;
+            --naver-black: #000000;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            --text-disabled: #CCCCCC;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F7F8FA;
+            --bg-tertiary: #F2F3F5;
+            --border-default: #E5E8EB;
+            --border-light: #F0F2F4;
+            --error: #FF5544;
+            --warning: #FFA726;
+            --accent-blue: #1E90FF;
+            
+            /* Spacing Scale */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-base: 16px;
+            --space-lg: 20px;
+            --space-xl: 24px;
+            --space-2xl: 32px;
+            --space-3xl: 48px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-base: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            font-size: 14px;
+        }
+
+        /* Layout - Mobile First */
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            min-height: 100vh;
+            padding: 0 var(--space-base);
+        }
+
+        /* Typography System - Naver Pay Design Guide */
+        /* Display Typography */
+        .display-large-bold { font-size: 40px; font-weight: 700; }
+        .display-large-semibold { font-size: 40px; font-weight: 600; }
+        .display-medium-bold { font-size: 32px; font-weight: 700; }
+        .display-medium-semibold { font-size: 32px; font-weight: 600; }
+        .display-small-bold { font-size: 28px; font-weight: 700; }
+        .display-small-semibold { font-size: 28px; font-weight: 600; }
+        .display-xsmall-bold { font-size: 24px; font-weight: 700; }
+        .display-xsmall-semibold { font-size: 24px; font-weight: 600; }
+        
+        /* Headings */
+        .heading-large-bold { font-size: 22px; font-weight: 700; }
+        .heading-large-semibold { font-size: 22px; font-weight: 600; }
+        .heading-medium-bold { font-size: 20px; font-weight: 700; }
+        .heading-medium-semibold { font-size: 20px; font-weight: 600; }
+        .heading-small-bold { font-size: 19px; font-weight: 700; }
+        .heading-small-semibold { font-size: 19px; font-weight: 600; }
+        .heading-xsmall-bold { font-size: 18px; font-weight: 700; }
+        .heading-xsmall-semibold { font-size: 18px; font-weight: 600; }
+        
+        /* Labels */
+        .label-large-bold { font-size: 17px; font-weight: 700; }
+        .label-large-semibold { font-size: 17px; font-weight: 600; }
+        .label-large-medium { font-size: 17px; font-weight: 500; }
+        .label-medium-bold { font-size: 16px; font-weight: 700; }
+        .label-medium-semibold { font-size: 16px; font-weight: 600; }
+        .label-medium-medium { font-size: 16px; font-weight: 500; }
+        .label-small-bold { font-size: 15px; font-weight: 700; }
+        .label-small-semibold { font-size: 15px; font-weight: 600; }
+        .label-small-medium { font-size: 15px; font-weight: 500; }
+        .label-xsmall-bold { font-size: 14px; font-weight: 700; }
+        .label-xsmall-semibold { font-size: 14px; font-weight: 600; }
+        .label-xsmall-medium { font-size: 14px; font-weight: 500; }
+        
+        /* Paragraphs */
+        .paragraph-large-bold { font-size: 17px; font-weight: 700; line-height: 1.6; }
+        .paragraph-large-regular { font-size: 17px; font-weight: 400; line-height: 1.6; }
+        .paragraph-medium-bold { font-size: 16px; font-weight: 700; line-height: 1.6; }
+        .paragraph-medium-regular { font-size: 16px; font-weight: 400; line-height: 1.6; }
+        .paragraph-small-bold { font-size: 15px; font-weight: 700; line-height: 1.6; }
+        .paragraph-small-regular { font-size: 15px; font-weight: 400; line-height: 1.6; }
+        .paragraph-xsmall-bold { font-size: 14px; font-weight: 700; line-height: 1.6; }
+        .paragraph-xsmall-regular { font-size: 14px; font-weight: 400; line-height: 1.6; }
+
+        /* Header */
+        .header {
+            background: var(--bg-primary);
+            padding: var(--space-md) 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-light);
+            margin: 0 calc(-1 * var(--space-base));
+            padding-left: var(--space-base);
+            padding-right: var(--space-base);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .header-icons {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .header-icon:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            background: var(--bg-primary);
+            padding: var(--space-base);
+            margin: var(--space-base) 0;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .progress-steps {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .step-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border-default);
+            transition: background-color 0.2s;
+        }
+
+        .step-dot.active,
+        .step-dot.completed {
+            background: var(--npay-green);
+        }
+
+        /* Dashboard Card */
+        .dashboard-card {
+            background: var(--bg-primary);
+            margin: var(--space-base) 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            padding: var(--space-lg) var(--space-lg) var(--space-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .user-greeting {
+            font-size: 14px;
+            margin-bottom: var(--space-xs);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .welcome-message {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: var(--space-base);
+            color: var(--text-primary);
+        }
+
+        .start-benefit {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-base);
+            font-weight: 500;
+            margin-top: var(--space-base);
+        }
+
+        .tax-shock-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: var(--space-base);
+            backdrop-filter: blur(10px);
+            margin-top: 0;
+        }
+
+        .tax-comparison {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-base);
+            margin-bottom: var(--space-base);
+        }
+
+        .tax-item {
+            text-align: center;
+        }
+
+        .tax-label {
+            font-size: 12px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .tax-amount {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .tax-amount.bad {
+            color: #FF5544;
+        }
+
+        .tax-amount.good {
+            color: #00DE5A;
+        }
+
+        .tax-message {
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-primary);
+        }
+        .reception-details {
+            display: flex;
+            justify-content: space-around;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: var(--space-base);
+            margin-top: 0;
+            margin-bottom: var(--space-base);
+            text-align: center;
+        }
+        .detail-label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .detail-value {
+            display: block;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        /* 섹션 카드 */
+        .section-card {
+            background: var(--bg-primary);
+            margin: var(--space-base) 0;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: var(--space-lg);
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s ease;
+        }
+
+        .section-header:hover {
+            background-color: #f8f9fa;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--npay-green);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 50%;
+            margin-bottom: var(--space-md);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+            line-height: 1.4;
+        }
+
+        .section-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section-content {
+            padding: var(--space-lg);
+            transition: max-height 0.4s ease-in-out, padding 0.3s ease, border-top-color 0.3s ease;
+            overflow: hidden;
+            max-height: 2000px; /* 충분히 큰 값 */
+            border-top: 1px solid var(--border-default);
+        }
+
+        .section-collapsed .section-content {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-top-color: transparent;
+        }
+
+        .section-toggle-btn-wrapper {
+            padding: var(--space-md) var(--space-base);
+            border-top: 1px solid var(--border-default);
+            background-color: var(--bg-primary);
+        }
+
+        .section-collapsed .section-toggle-btn-wrapper {
+             border-top-color: transparent;
+        }
+
+        .section-toggle-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border 0.2s ease;
+        }
+
+        .section-collapsed .section-toggle-btn {
+            background-color: var(--npay-green);
+            color: white;
+            border: 1px solid var(--npay-green);
+        }
+
+        .section-card:not(.section-collapsed) .section-toggle-btn {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-default);
+        }
+
+        /* 중요 알림 */
+        .critical-warning {
+            background: rgba(0, 222, 90, 0.05);
+            border: 1px solid var(--npay-green);
+            border-radius: 8px;
+            padding: var(--space-base);
+            margin-bottom: var(--space-base);
+        }
+
+        .warning-header {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .warning-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--npay-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .warning-content {
+            flex: 1;
+        }
+
+        .warning-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            color: var(--npay-green);
+        }
+
+        .warning-desc {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        /* 해결책 */
+        .solution-section {
+            background: rgba(0, 222, 90, 0.05);
+            border: 1px solid var(--npay-green);
+            border-radius: 8px;
+            padding: var(--space-base);
+            margin-bottom: var(--space-base);
+        }
+
+        .solution-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-base);
+        }
+
+        .solution-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--npay-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .solution-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--npay-green);
+        }
+
+        .solution-steps {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .solution-step {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            padding: var(--space-base);
+            background: var(--bg-primary);
+            border-radius: 6px;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--npay-green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: var(--space-sm);
+        }
+
+        .step-benefit {
+            font-size: 12px;
+            color: var(--npay-green);
+            font-weight: 600;
+            background: var(--bg-primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Cards - Feature Card Design Guide */
+        .info-card {
+            background: white;
+            border: 1px solid #E5E8EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #222222;
+            margin-bottom: 12px;
+        }
+
+        /* Badge System */
+        .badge {
+            display: inline-flex;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge-primary {
+            background: #00DE5A;
+            color: white;
+        }
+
+        .badge-secondary {
+            background: #F2F3F5;
+            color: #666666;
+        }
+
+        .badge-alert {
+            background: #FF5544;
+            color: white;
+        }
+
+        /* 비교 테이블 - Grid Layout System */
+        .comparison-table {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .comparison-header {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .comparison-item {
+            text-align: center;
+            padding: 16px;
+            background: #F7F8FA;
+            border-radius: 6px;
+        }
+
+        .comparison-item.highlight {
+            background: rgba(0, 222, 90, 0.05);
+            border: 1px solid #00DE5A;
+        }
+
+        .comparison-item.danger {
+            background: rgba(255, 85, 68, 0.05);
+            border: 1px solid #FF5544;
+        }
+
+        .comparison-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .comparison-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .comparison-item.highlight .comparison-value {
+            color: var(--npay-green);
+        }
+
+        .comparison-item.danger .comparison-value {
+            color: var(--error);
+        }
+
+        /* 인사이트 박스 */
+        .insight-box {
+            background: rgba(0, 222, 90, 0.05);
+            border-radius: 8px;
+            padding: var(--space-base);
+            margin-bottom: var(--space-base);
+            border-left: 3px solid var(--npay-green);
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .insight-icon {
+            width: 16px;
+            height: 16px;
+            background: var(--npay-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .insight-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--npay-green);
+        }
+
+        .insight-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Buttons - Naver Pay Design Guide */
+        .btn {
+            height: 48px;
+            padding: 0 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 100ms ease;
+        }
+
+        .btn-primary {
+            background: #00DE5A;
+            color: white;
+        }
+
+        .btn-primary:disabled {
+            background: #E5E8EB;
+            color: #999999;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #222222;
+            border: 1px solid #E5E8EB;
+            font-weight: 500;
+        }
+
+        .btn-secondary:active {
+            background: #F7F8FA;
+        }
+
+        .btn-text {
+            background: transparent;
+            color: #00DE5A;
+            font-size: 14px;
+            padding: 8px 12px;
+            text-decoration: underline;
+            height: auto;
+            width: auto;
+        }
+
+        /* 액션 영역 */
+        .action-section {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: var(--space-base);
+            margin-top: var(--space-lg);
+        }
+
+        .action-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-base);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        /* Q&A */
+        .qa-section {
+            margin-top: var(--space-lg);
+            padding-top: var(--space-base);
+            border-top: 1px solid var(--border-default);
+        }
+
+        .qa-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-base);
+        }
+
+        .qa-item {
+            margin-bottom: var(--space-sm);
+            border: 1px solid var(--border-default);
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--bg-primary);
+        }
+
+        .qa-question {
+            padding: var(--space-base);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .qa-question:hover {
+            background: #F0F0F0;
+        }
+
+        .qa-arrow {
+            font-size: 16px;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+            transform: rotate(0deg);
+        }
+        .qa-item.open .qa-arrow {
+            transform: rotate(180deg);
+        }
+
+        .qa-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .qa-item.open .qa-answer {
+            max-height: 500px; /* 충분히 큰 값 */
+        }
+
+        .qa-answer-content {
+            padding: var(--space-base);
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            border-top: 1px solid var(--border-default);
+        }
+
+        /* CTA - Main Balance Card Style */
+        .final-cta {
+            background: #F7F8FA;
+            margin: var(--space-base) 0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .final-cta-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            color: #222222;
+        }
+
+        .final-cta-desc {
+            font-size: 15px;
+            margin-bottom: var(--space-lg);
+            line-height: 1.6;
+            color: #666666;
+        }
+
+        .final-cta-button {
+            background: #00DE5A;
+            color: white;
+            height: 48px;
+            border: none;
+            border-radius: 8px;
+            padding: 0 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 100ms ease;
+        }
+
+        .final-cta-button:active {
+            transform: scale(0.98);
+        }
+
+        .final-cta-button:active {
+            opacity: 0.8;
+        }
+
+        /* Safe Area */
+        .safe-area {
+            height: 20px;
+            background: var(--bg-secondary);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 480px) {
+            .tax-comparison {
+                grid-template-columns: 1fr;
+                gap: var(--space-sm);
+            }
+
+            .comparison-header {
+                grid-template-columns: 1fr;
+                gap: var(--space-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-container">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="12" fill="#000"/>
+                        <text x="12" y="16" text-anchor="middle" font-family="Pretendard, -apple-system, sans-serif" font-size="14" font-weight="700" fill="white">N</text>
+                    </svg>
+                    <span class="logo-text">pay</span>
+                </div>
+            </div>
+            <div class="header-icons">
+                <button class="header-icon" aria-label="메뉴">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 진행 상태 -->
+        <div class="progress-indicator">
+            <span class="progress-text">수령 준비 중</span>
+            <div class="progress-steps">
+                <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+            </div>
+        </div>
+
+        <!-- 대시보드 -->
+        <div class="dashboard-card">
+            <div class="dashboard-header">
+                <div class="user-greeting">김페이님 (만 58세)</div>
+                <div class="welcome-message">
+                    💰 총 연금자산 <strong>4억 8,500만원</strong>
+                </div>
+
+                <div class="reception-details">
+                    <div class="detail-item">
+                        <span class="detail-label">이번달 수령액</span>
+                        <span class="detail-value">1,250,000원</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">총 수령액</span>
+                        <span class="detail-value">7,500,000원</span>
+                    </div>
+                </div>
+
+                <div class="start-benefit">
+                    어떻게 받느냐에 따라, 내야 할 세금이 달라져요.
+                </div>
+                
+                <div class="tax-shock-card">
+                    <div class="tax-comparison">
+                        <div class="tax-item">
+                            <div class="tax-label">😱 현재 계획 총 부담액</div>
+                            <div class="tax-amount bad">연 561만원</div>
+                        </div>
+                        <div class="tax-item">
+                            <div class="tax-label">✅ 최적화 후 총 부담액</div>
+                            <div class="tax-amount good">연 147만원</div>
+                        </div>
+                    </div>
+                    <div class="tax-message">
+                        <strong>연 413만원 절약 가능!</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 빠른 액션 -->
+        <div style="padding: 0 var(--space-base) var(--space-base);">
+            <button class="btn" style="width: 100%; background: var(--accent-blue); color: white; border: none;" onclick="document.getElementById('simpleCalculator').scrollIntoView({behavior: 'smooth'})">
+                💰 내 세금 계산해보기
+            </button>
+        </div>
+        
+        <!-- 간단한 세금 계산기 -->
+        <div class="section-card" style="margin-top: 0;" id="simpleCalculator">
+            <div class="section-content">
+                <div style="background: #F8F9FA; border-radius: 8px; padding: 16px; text-align: center;">
+                    <div style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px;">
+                        💰 월 얼마 받고 싶나요?
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px;">
+                        <input type="number" id="monthlyInput" value="203" min="50" max="500" step="5"
+                               style="width: 80px; padding: 8px; border: 2px solid var(--npay-green); border-radius: 6px; font-size: 16px; font-weight: 600; text-align: center; background: white;">
+                        <span style="font-size: 14px; color: var(--text-secondary);">만원</span>
+                        <button onclick="calculateSimpleTax()" 
+                                style="background: var(--npay-green); color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 600; cursor: pointer;">
+                            계산
+                        </button>
+                    </div>
+                
+                    <div id="calculationResult" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #E5E5E5;">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">연간 세금</div>
+                        <div id="resultTax" style="font-size: 20px; font-weight: 700; color: var(--error); margin-bottom: 8px;">0만원</div>
+                        <div id="resultMessage" style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 세금 원리 간단 설명 -->
+        <div class="section-card section-collapsed">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div style="text-align: center;">
+                    <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">🤔 세금이 어떻게 계산되나요?</h2>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">1,500만원이 중요한 이유</p>
+                </div>
+            </div>
+            <div class="section-toggle-btn-wrapper">
+                <button class="section-toggle-btn" onclick="toggleSection(this)">더 자세히 보기 ▼</button>
+            </div>
+            <div class="section-content">
+                <div style="background: #F8F9FA; border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+                    <div style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 16px;">📊 연금 소득별 세율</div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <div style="position: relative; height: 50px; background: linear-gradient(to right, rgba(0, 222, 90, 0.05) 0%, rgba(0, 222, 90, 0.05) 60%, rgba(255, 85, 68, 0.05) 60%, rgba(255, 85, 68, 0.05) 100%); border-radius: 6px; border: 1px solid #E5E5E5; overflow: hidden;">
+                            <div style="position: absolute; left: 60%; top: 0; bottom: 0; width: 2px; background: #DC2626;"></div>
+                            <div style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--npay-green); font-weight: 600; font-size: 13px;">5.5%</div>
+                            <div style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #DC2626; font-weight: 600; font-size: 13px;">16.5%</div>
+                        </div>
+                        <div style="text-align: center; margin-top: 8px;">
+                            <div style="display: inline-block; background: #FFF3E0; color: #DC2626; padding: 4px 12px; border-radius: 12px; border: 1px solid #FF9800; font-size: 11px; font-weight: 600;">
+                                ⚠️ 경계선: 연 1,500만원 (월 125만원)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
+                        <div style="background: rgba(0, 222, 90, 0.05); border: 1px solid var(--npay-green); border-radius: 8px; padding: 12px; text-align: center;">
+                            <div style="font-size: 13px; color: var(--npay-green); font-weight: 600;">✅ 1,500만원 이하</div>
+                            <div style="font-size: 12px; color: #666; margin-top: 4px;">5.5% 저율<br>(나이에 따라 3.3~5.5%)</div>
+                        </div>
+                        <div style="background: rgba(255, 85, 68, 0.05); border: 1px solid var(--error); border-radius: 8px; padding: 12px; text-align: center;">
+                            <div style="font-size: 13px; color: var(--error); font-weight: 600;">⚠️ 1,500만원 초과</div>
+                            <div style="font-size: 12px; color: #666; margin-top: 4px;">16.5% 고율<br>(3배 높은 세율!)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #FFF3E0, #FFF8E1); border: 2px solid #FF9800; border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <span style="font-size: 20px;">💡</span>
+                        <span style="font-size: 16px; font-weight: 600; color: #F57C00;">핵심 포인트</span>
+                    </div>
+                    <div style="font-size: 15px; color: #333; line-height: 1.6;">
+                        <strong>월 125만원까지는 5.5%, 넘으면 16.5%</strong><br>
+                        월 5만원 더 받으려다 세금이 3배로 늘어날 수 있어요!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹션 1: 분리과세 vs 종합과세 -->
+        <div class="section-card section-collapsed">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">1</div>
+                <h2 class="section-title">💡 분리과세 vs 종합과세 완벽 이해를 통해 내게 유리한 세금 선택법 찾기</h2>
+                <p class="section-desc">세금, 어떻게 내느냐에 따라 돌려받을 수도, 더 낼 수도 있어요.</p>
+            </div>
+            <div class="section-toggle-btn-wrapper">
+                <button class="section-toggle-btn" onclick="toggleSection(this)">더 자세히 보기 ▼</button>
+            </div>
+            <div class="section-content">
+                <div class="critical-warning">
+                    <div class="warning-header">
+                        <div class="warning-icon">📊</div>
+                        <div class="warning-content">
+                            <div class="warning-title">김페이님에게 맞는 세금 방식은 따로 있어요!</div>
+                            <div class="warning-desc">
+                                연금 세금, 내는 방식은 크게 2가지예요.<br><br>
+                                <strong>1. 연금만 따로 계산 (분리과세):</strong> 다른 소득과 상관없이 연금에만 낮은 세율을 적용해요. 대부분의 경우 유리해요.<br>
+                                <strong>2. 모든 소득 합쳐서 계산 (종합과세):</strong> 다른 소득이 적을 때 선택하면 오히려 세금이 줄어들기도 해요.<br><br>
+                                <strong>핵심:</strong> 김페이님의 다른 소득(근로, 사업 등)에 따라 유불리가 바뀌므로, 나에게 맞는 방식을 꼭 확인해야 해요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-table">
+                    <div class="comparison-header">
+                        <div class="comparison-item highlight">
+                            <div class="comparison-label">📊 분리과세</div>
+                            <div class="comparison-value">1,500만원까지 저율</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">📈 종합과세</div>
+                            <div class="comparison-value">6~45% 누진</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #666;">
+                        💡 일반적으로 분리과세가 유리하지만, 상황에 따라 다름
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-card-title">김페이님 맞춤 분석 결과</h3>
+                    <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; margin-top: 12px;">
+                        <div style="font-size: 14px; line-height: 1.8;">
+                            김페이님은 연금 외 사업소득이 있으셔서, 두 소득을 합쳐서 계산하는 '종합과세'를 선택하면 세금이 더 높아져요.<br><br>
+                            • <strong style="color: var(--error);">종합과세 선택 시:</strong> 예상 세금 약 150만원<br>
+                            • <strong style="color: #03C75A;">분리과세 선택 시:</strong> 예상 세금 약 91만원<br><br>
+                            
+                            <strong style="color: #03C75A;">💡 따라서 연금만 따로 계산하는 '분리과세'가 연간 59만원 더 이득이에요!</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-section">
+                    <div class="solution-header">
+                        <div class="solution-icon">🎯</div>
+                        <div class="solution-title">과세 방법 선택 가이드</div>
+                    </div>
+                    
+                    <div class="solution-steps">
+                        <div class="solution-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">'분리과세'가 유리한 분</div>
+                                <div class="step-desc">연금 외 다른 소득(근로, 사업 등)이 있는 분</div>
+                                <div class="step-benefit">간단하고 예측 가능</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">'종합과세'가 유리한 분</div>
+                                <div class="step-desc">연금 외 다른 소득이 없거나 매우 적은 분</div>
+                                <div class="step-benefit">더 낮은 세율 가능</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">매년 선택 가능</div>
+                                <div class="step-desc">5월 종합소득세 신고 때 매년 다시 선택할 수 있음</div>
+                                <div class="step-benefit">유연한 세무 전략</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-section">
+                    <div class="action-title">내게 맞는 과세 방법 찾기</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">내게 유리한 방법 확인하기</button>
+                        <button class="btn btn-secondary"> 연금 전문가와 상담하기</button>
+                    </div>
+                </div>
+
+                <div class="qa-section">
+                    <div class="qa-title">분리과세/종합과세 관련 궁금증</div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question" onclick="toggleQA(this)">
+                            <span>분리과세가 항상 유리한가요?</span>
+                            <span class="qa-arrow">▼</span>
+                        </div>
+                        <div class="qa-answer">
+                            <div class="qa-answer-content">
+                                아닙니다! 다른 소득이 적으면 종합과세가 더 유리할 수 있어요. 특히 연금 소득만 있거나, 소득공제가 많은 경우 종합과세를 고려해보세요.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question" onclick="toggleQA(this)">
+                            <span>한 번 선택하면 바꿀 수 없나요?</span>
+                            <span class="qa-arrow">▼</span>
+                        </div>
+                        <div class="qa-answer">
+                            <div class="qa-answer-content">
+                                매년 바꿀 수 있어요! 5월 종합소득세 신고 때마다 분리과세와 종합과세 중 선택할 수 있습니다. 상황이 바뀌면 언제든 변경 가능해요.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question" onclick="toggleQA(this)">
+                            <span>어떻게 계산해서 선택하나요?</span>
+                            <span class="qa-arrow">▼</span>
+                        </div>
+                        <div class="qa-answer">
+                            <div class="qa-answer-content">
+                                간단한 방법은 연금액 × 16.5%와 전체소득을 종합과세로 계산한 세금을 비교하는 것입니다. 복잡하다면 세무사 상담을 받아보세요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹션 2: 1,500만원 마법의 숫자 -->
+        <div class="section-card section-collapsed">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">2</div>
+                <h2 class="section-title">💡 1,500만원 기준, 현명한 절세의 시작</h2>
+                <p class="section-desc">연간 1,500만원이 세금의 운명을 가른다는 거 알고 계셨나요?</p>
+            </div>
+            <div class="section-toggle-btn-wrapper">
+                <button class="section-toggle-btn" onclick="toggleSection(this)">더 자세히 보기 ▼</button>
+            </div>
+            <div class="section-content">
+                <div class="critical-warning">
+                    <div class="warning-header">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-content">
+                            <div class="warning-title">1,500만원 경계선의 비밀</div>
+                            <div class="warning-desc">
+                                <strong>✅ 연 1,500만원 이하 (월 125만원):</strong><br>
+                                • 만 55~69세: 5.5%<br>
+                                • 만 70~79세: 4.4%<br>
+                                • 만 80세 이상: 3.3%<br><br>
+                                
+                                <strong>❌ 연 1,500만원 초과:</strong><br>
+                                • 1,500만원: 연령별 저율<br>
+                                • 초과분: 16.5% 중과세 (3배↑)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-table">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-sm);">
+                        <div class="comparison-item highlight">
+                            <div class="comparison-label">월 125만원</div>
+                            <div class="comparison-value">연 82.5만원</div>
+                            <div style="font-size: 11px; margin-top: 4px;">세금 (5.5%)</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">월 130만원</div>
+                            <div class="comparison-value">연 91.3만원</div>
+                            <div style="font-size: 11px; margin-top: 4px;">세금 (더 많이)</div>
+                        </div>
+                        <div class="comparison-item danger">
+                            <div class="comparison-label">월 200만원</div>
+                            <div class="comparison-value">연 396만원</div>
+                            <div style="font-size: 11px; margin-top: 4px;">세금 (폭탄)</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #D32F2F;">
+                        💡 수령액을 잘 조절해서, 불필요한 세금을 아끼세요.
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-header">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-title">부부 분산의 마법</div>
+                    </div>
+                    <div class="insight-content">
+                        <strong>💑 김페이님 현재 계획 (혼자 월 203만원):</strong><br>
+                        • 1,500만원: 82.5만원 (5.5%)<br>
+                        • 936만원 초과분: 154.4만원 (16.5%)<br>
+                        • 지방소득세: 23.7만원<br>
+                        • 건강보험료: 연 300만원 추가<br>
+                        • <strong style="color: #D32F2F;">총 부담: 연 560.6만원</strong><br><br>
+                        
+                        <strong>👫 김페이님+배우자 분산 (각각 월 101.5만원):</strong><br>
+                        • 1,218만원 × 2명: 67만원 × 2 = 134만원<br>
+                        • 지방소득세: 13.4만원<br>
+                        • 건강보험료: 0원 (피부양자 유지)<br>
+                        • <strong style="color: #03C75A;">총 부담: 연 147.4만원</strong><br><br>
+                        
+                        <strong>🎯 김페이님 절세 효과: 연 413.2만원! (74% 절감)</strong>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-card-title">연령별 세율 적용 예시</h3>
+                    <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; margin-top: 12px;">
+                        <div style="font-size: 14px; line-height: 1.8;">
+                            <strong>📊 월 125만원 수령 시 연간 세금:</strong><br><br>
+                            
+                            <strong>60세 (5.5% 세율):</strong><br>
+                            • 연금소득세: 1,500만원 × 5.5% = 82.5만원<br>
+                            • 지방소득세: 82.5만원 × 10% = 8.25만원<br>
+                            • <strong style="color: #03C75A;">총 세금: 90.75만원 (실질 6.05%)</strong><br><br>
+                            
+                            <strong>70세 (4.4% 세율):</strong><br>
+                            • 연금소득세: 1,500만원 × 4.4% = 66만원<br>
+                            • 지방소득세: 66만원 × 10% = 6.6만원<br>
+                            • <strong style="color: #03C75A;">총 세금: 72.6만원 (실질 4.84%)</strong><br><br>
+                            
+                            <strong>80세 (3.3% 세율):</strong><br>
+                            • 연금소득세: 1,500만원 × 3.3% = 49.5만원<br>
+                            • 지방소득세: 49.5만원 × 10% = 4.95만원<br>
+                            • <strong style="color: #03C75A;">총 세금: 54.45만원 (실질 3.63%)</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-section">
+                    <div class="solution-header">
+                        <div class="solution-icon">🎯</div>
+                        <div class="solution-title">1,500만원 최적화 전략</div>
+                    </div>
+                    
+                    <div class="solution-steps">
+                        <div class="solution-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">월 125만원 이하 유지</div>
+                                <div class="step-desc">연간 1,500만원을 넘지 않도록 수령액 조정</div>
+                                <div class="step-benefit">연령별 저율 적용</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">배우자와 분산 수령</div>
+                                <div class="step-desc">각자 월 125만원 이하로 받아서 세율 최소화</div>
+                                <div class="step-benefit">최대 43% 세금 절약</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">나머지는 다른 방식 활용</div>
+                                <div class="step-desc">초과분은 주택연금, 자산운용 등으로 보완</div>
+                                <div class="step-benefit">전체적 수령액 유지</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-section">
+                    <div class="action-title">1,500만원 경계선 체크</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">내 예상세금 미리보기</button>
+                        <button class="btn btn-secondary">부부 공동수령으로 절세효과 확인</button>
+                    </div>
+                </div>
+
+                <div class="qa-section">
+                    <div class="qa-title">1,500만원 경계선 관련 궁금증</div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question" onclick="toggleQA(this)">
+                            <span>왜 1,500만원이 중요한가요?</span>
+                            <span class="qa-arrow">▼</span>
+                        </div>
+                        <div class="qa-answer">
+                            <div class="qa-answer-content">
+                                1,500만원까지는 나이에 따른 저율(3.3~5.5%)이 적용되지만, 초과분은 16.5%로 세율이 3배 높아집니다. 월 5만원 더 받으려다 연간 수십만원 더 내는 상황이 생겨요.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question" onclick="toggleQA(this)">
+                            <span>배우자 분산은 어떻게 하나요?</span>
+                            <span class="qa-arrow">▼</span>
+                        </div>
+                        <div class="qa-answer">
+                            <div class="qa-answer-content">
+                                연금 수령 시 배우자와 50:50 또는 원하는 비율로 나누어 받을 수 있습니다. 금융기관에 '연금 분할 수령' 신청을 하면 됩니다. 각자 1,500만원 이하로 받으면 저율이 적용돼요.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question" onclick="toggleQA(this)">
+                            <span>배우자가 없으면 어떻게 하나요?</span>
+                            <span class="qa-arrow">▼</span>
+                        </div>
+                        <div class="qa-answer">
+                            <div class="qa-answer-content">
+                                배우자가 없다면 월 125만원 이하로 수령하고, 부족한 부분은 주택연금이나 자산운용 수익으로 보완하는 것이 좋습니다. 여러 소득원을 분산하여 세금 부담을 줄일 수 있어요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹션 3: IRP 10년 거치 40% 할인 -->
+        <div class="section-card section-collapsed">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">3</div>
+                <h2 class="section-title">목돈으로 받은 퇴직금, 세금 40% 아끼는 방법</h2>
+                <p class="section-desc">퇴직금을 바로 쓰지 않고 연금으로 바꿔 받으면, 나라에서 주는 마지막 큰 세금 혜택을 챙길 수 있어요.</p>
+            </div>
+            <div class="section-toggle-btn-wrapper">
+                <button class="section-toggle-btn" onclick="toggleSection(this)">더 자세히 보기 ▼</button>
+            </div>
+            <div class="section-content">
+                <div class="critical-warning">
+                    <div class="warning-header">
+                        <div class="warning-icon">💰</div>
+                        <div class="warning-content">
+                            <div class="warning-title">퇴직금, 어떻게 받느냐가 중요해요</div>
+                            <div class="warning-desc">
+                                퇴직금을 받는 방법은 2가지가 있어요. 하나는 세금을 많이 내고 바로 쓰는 것이고, 다른 하나는 'IRP 계좌'에 넣어두고 연금으로 받으며 세금을 40%나 아끼는 방법이에요.<br><br>
+                                <strong>김페이님은 IRP로 연금처럼 받는 방식을 선택해, 세금 3,360만원을 아낄 수 있었어요!</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-table">
+                    <div class="comparison-header">
+                        <div class="comparison-item danger">
+                            <div class="comparison-label">즉시 수령</div>
+                            <div class="comparison-value">세금 6,000만원</div>
+                        </div>
+                        <div class="comparison-item highlight">
+                            <div class="comparison-label">IRP 10년 거치</div>
+                            <div class="comparison-value">세금 3,600만원</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #03C75A;">
+                        💰 절세 효과: 2,400만원 (40% 할인)
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-header">
+                        <div class="insight-icon">⏰</div>
+                        <div class="insight-title">세금 할인, 타이밍이 중요해요!</div>
+                    </div>
+                    <div class="insight-content">
+                        이 40% 세금 할인을 받으려면, 퇴직금을 IRP 계좌로 옮긴 뒤 <strong style="color: var(--npay-green);">10년 이상 연금으로 나눠받아야 해요.</strong> 그래서 너무 늦게 시작하면 혜택을 못 받을 수도 있어요.<br><br>
+                        <strong>🟢 55세 (김페이님):</strong> 65세부터 연금 수령. <strong style="color: var(--npay-green);">가능!</strong><br>
+                        <strong>🟡 60세:</strong> 70세부터 연금 수령. <strong style="color: var(--npay-green);">가능!</strong><br>
+                        <strong>🔴 65세:</strong> 75세부터 연금 수령. <strong style="color: var(--error);">주의!</strong> 일부 상품은 75세 이전에만 가능할 수 있어요.
+                    </div>
+                </div>
+
+                <div class="action-section">
+                    <div class="action-title">IRP 거치 혜택 확인</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">IRP로 40% 세금 아끼기</button>
+                        <button class="btn btn-secondary">내 퇴직금 절세액 계산하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹션 4: 건강보험료 절약 전략 -->
+        <div class="section-card section-collapsed">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">4</div>
+                <h2 class="section-title">💡 알고 준비하면 아낄 수 있는, 건강보험료</h2>
+                <p class="section-desc">연금 수령액에 따라, 안 내던 건강보험료가 매달 2-30만원씩 나올 수 있어요.</p>
+            </div>
+            <div class="section-toggle-btn-wrapper">
+                <button class="section-toggle-btn" onclick="toggleSection(this)">더 자세히 보기 ▼</button>
+            </div>
+            <div class="section-content">
+                <div class="critical-warning">
+                    <div class="warning-header">
+                        <div class="warning-icon">🚨</div>
+                        <div class="warning-content">
+                            <div class="warning-title">자녀 덕분에 안 내던 건강보험료, 이젠 직접 내야 할 수도 있어요</div>
+                            <div class="warning-desc">
+                                혹시 지금 자녀의 직장 보험에 등록되어 보험료를 안 내고 계신가요? 이걸 '피부양자'라고 해요.<br><br>
+                                하지만 연금소득이 <strong style="color: var(--error);">연 2,000만원</strong>을 넘으면 이 자격이 사라져요. 그 순간부터는 '지역가입자'가 되어, 소득과 재산에 따라 계산된 <strong style="color: var(--error);">건강보험료가 매달 청구됩니다.</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-table">
+                    <div class="comparison-header">
+                        <div class="comparison-item highlight">
+                            <div class="comparison-label">연금 월 166만원 이하 수령 시</div>
+                            <div class="comparison-value">보험료 0원</div>
+                        </div>
+                        <div class="comparison-item danger">
+                            <div class="comparison-label">연금 월 167만원 이상 수령 시</div>
+                            <div class="comparison-value">보험료 월 25만원+</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #03C75A;">
+                        💡 연금 수령액 조절만으로 연 300만원을 아낄 수 있어요!
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-header">
+                        <div class="insight-icon">💰</div>
+                        <div class="insight-title">가장 쉬운 절약법: 연금 나눠받기</div>
+                    </div>
+                    <div class="insight-content">
+                        김페이님이 월 200만원을 혼자 다 받으면 연소득 2,400만원이 되어, 매달 약 25만원의 보험료가 발생해요.<br><br>
+                        하지만 <strong style="color: var(--npay-green);">아내분과 월 100만원씩 나눠 받으면,</strong> 두 분 모두 연소득 2,000만원이 넘지 않아 <strong style="color: var(--npay-green);">보험료는 0원 그대로예요.</strong><br><br>
+                        <strong>🎯 이 방법 하나로 연 300만원을 아끼는 효과!</strong>
+                    </div>
+                </div>
+
+                <div class="action-section">
+                    <div class="action-title">건강보험 자격 체크</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">나도 보험료 0원, 계속 유지될까?</button>
+                        <button class="btn btn-secondary">내 상황에 맞는 건보료 절약법 찾기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹션 5: 주택연금으로 절세하며 수령액 늘리기 -->
+        <div class="section-card section-collapsed">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">5</div>
+                <h2 class="section-title">🏠 주택연금으로 절세하며 수령액 늘리기</h2>
+                <p class="section-desc">집으로도 절세가 된다는 거 알고 계셨나요? 주택연금은 완전 비과세!</p>
+            </div>
+            <div class="section-toggle-btn-wrapper">
+                <button class="section-toggle-btn" onclick="toggleSection(this)">더 자세히 보기 ▼</button>
+            </div>
+            <div class="section-content">
+                <div class="critical-warning">
+                    <div class="warning-header">
+                        <div class="warning-icon">🏠</div>
+                        <div class="warning-content">
+                            <div class="warning-title">주택연금의 세제 혜택</div>
+                            <div class="warning-desc">
+                                <strong>💡 주택연금 특별한 점:</strong><br>
+                                • 연금 소득: 완전 비과세<br>
+                                • 상속 시: 상속세 공제 혜택<br>
+                                • 종부세: 부담 없음 (거주 중)<br>
+                                • 1,500만원 한도에 포함되지 않음!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-table">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-sm);">
+                        <div class="comparison-item">
+                            <div class="comparison-label">5억 집</div>
+                            <div class="comparison-value">월 67만원</div>
+                            <div style="font-size: 11px; margin-top: 4px;">70세 가입</div>
+                        </div>
+                        <div class="comparison-item highlight">
+                            <div class="comparison-label">7억 집</div>
+                            <div class="comparison-value">월 93만원</div>
+                            <div style="font-size: 11px; margin-top: 4px;">70세 가입</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">9억 집</div>
+                            <div class="comparison-value">월 120만원</div>
+                            <div style="font-size: 11px; margin-top: 4px;">70세 가입</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #03C75A;">
+                        💰 모든 금액이 비과세! 세금 0원
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-header">
+                        <div class="insight-icon">💰</div>
+                        <div class="insight-title">절세 + 수령액 증대 효과</div>
+                    </div>
+                    <div class="insight-content">
+                        <strong>기존 개인연금:</strong> 월 100만원 (세금 5.5만원)<br>
+                        <strong>주택연금 추가:</strong> 월 120만원 (세금 0원)<br>
+                        ━━━━━━━━━━━━━━━━━━━━━━━━<br>
+                        <strong>총 수령:</strong> 월 220만원<br>
+                        <strong>총 세금:</strong> 월 5.5만원만!<br><br>
+                        
+                        <strong>📈 집값 상승분도 추가:</strong><br>
+                        • 매년 집값 평가 → 연금액 재계산<br>
+                        • 상승분만큼 월 지급액 증가<br>
+                        • 이것도 비과세!
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-card-title">가입 조건</h3>
+                    <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; margin-top: 12px;">
+                        <div style="font-size: 14px; line-height: 1.8;">
+                            • 만 55세 이상 (부부 중 한 명)<br>
+                            • 주택 가격 9억원 이하<br>
+                            • 대출 잔액 주택가격의 50% 이하<br>
+                            • 1주택 소유자 (다주택자도 조건 충족 시 가능)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-section">
+                    <div class="action-title">주택연금 활용하기</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">주택연금으로 월 얼마 받을까?</button>
+                        <button class="btn btn-secondary">나도 주택연금 가입될까?</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹션 6: 지금 당장 실행 체크리스트 -->
+        <div class="section-card section-collapsed">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">6</div>
+                <h2 class="section-title">✅ 지금 당장 실행 체크리스트</h2>
+                <p class="section-desc">절세 우선 실행 계획으로 매년 수백만원 절약하세요</p>
+            </div>
+            <div class="section-toggle-btn-wrapper">
+                <button class="section-toggle-btn" onclick="toggleSection(this)">더 자세히 보기 ▼</button>
+            </div>
+            <div class="section-content">
+                <div class="solution-section">
+                    <div class="solution-header">
+                        <div class="solution-icon">🚨</div>
+                        <div class="solution-title">즉시 실행 (이번 주)</div>
+                    </div>
+                    
+                    <div class="solution-steps">
+                        <div class="solution-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">김페이님 현재 계획의 부담액 확인</div>
+                                <div class="step-desc">월 203만원 수령 시, 세금과 건보료로 연간 총 561만원이 예상돼요.</div>
+                                <div class="step-benefit">문제점 명확히 인지</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">배우자와 연금 나눠받기 상의</div>
+                                <div class="step-desc">두 분이 월 101.5만원씩 나눠 받으면, 총 부담액이 연 147만원으로 줄어요.</div>
+                                <div class="step-benefit">연 413만원 절약</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">연금 수령액 1,500만원 이하 계획</div>
+                                <div class="step-desc">월 125만원 이하로 받으면, 낮은 연금소득세율(5.5%)을 적용받게 됩니다.</div>
+                                <div class="step-benefit">세금 최소화의 핵심</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-section">
+                    <div class="solution-header">
+                        <div class="solution-icon">⚡</div>
+                        <div class="solution-title">단기 실행 (이번 달)</div>
+                    </div>
+                    
+                    <div class="solution-steps">
+                        <div class="solution-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">IRP 계좌로 퇴직금 옮기기</div>
+                                <div class="step-desc">퇴직금을 IRP로 받아 연금으로 수령 시, 세금 3,360만원을 아낄 수 있어요.</div>
+                                <div class="step-benefit">일회성 세금 40% 할인</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">'분리과세' 신청 준비</div>
+                                <div class="step-desc">김페이님은 사업소득이 있으므로, 연금소득을 따로 떼어 계산하는게 유리해요.</div>
+                                <div class="step-benefit">연 59만원 추가 절약</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">주택연금 가입 조건 확인</div>
+                                <div class="step-desc">보유하신 7억원 주택으로 주택연금 가입 가능 여부를 미리 확인해두세요.</div>
+                                <div class="step-benefit">비과세 소득원 확보</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-section">
+                    <div class="solution-header">
+                        <div class="solution-icon">💰</div>
+                        <div class="solution-title">중기 실행 (3개월 내)</div>
+                    </div>
+                    
+                    <div class="solution-steps">
+                        <div class="solution-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">전문가와 최종 전략 점검</div>
+                                <div class="step-desc">오늘 확인한 내용(연금 분산, IRP 활용 등)을 바탕으로 전문가와 상담하세요.</div>
+                                <div class="step-benefit">최적의 포트폴리오 완성</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">금융기관에 수령 방법 신청</div>
+                                <div class="step-desc">최종 결정한 연금 수령액과 방식(분할 수령 등)을 금융기관에 신청하세요.</div>
+                                <div class="step-benefit">절세 계획 실행</div>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">건강보험 피부양자 자격 유지 확인</div>
+                                <div class="step-desc">연금 수령액 변경 후, 건강보험공단에 피부양자 자격이 유지되는지 최종 확인하세요.</div>
+                                <div class="step-benefit">숨은 비용까지 완벽 방어</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-section">
+                    <div class="action-title">전문가 상담 받기</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">전문가와 1:1 무료 상담하기</button>
+                        <button class="btn btn-secondary">나만의 절세 계획표 받기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 개인 정보 입력 및 맞춤 분석 -->
+        <div class="section-card section-collapsed">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div style="text-align: center;">
+                    <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">👤 내 상황 맞춤 분석</h2>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">3가지 정보만 입력하세요</p>
+                </div>
+            </div>
+            <div class="section-toggle-btn-wrapper">
+                <button class="section-toggle-btn" onclick="toggleSection(this)">더 자세히 보기 ▼</button>
+            </div>
+            <div class="section-content">
+                <div style="background: #F8F9FA; border-radius: 12px; padding: 24px;">
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- 총 연금 자산 -->
+                        <div>
+                            <label style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; display: block;">💰 총 연금 자산</label>
+                            <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 8px 0;">퇴직금 + 개인연금 + 국민연금 모두 합쳐서</p>
+                            <div style="position: relative;">
+                                <input type="number" id="totalAssets" value="48500" min="1000" max="200000" step="1000"
+                                       style="width: 100%; padding: 12px 50px 12px 12px; border: 2px solid var(--npay-green); border-radius: 8px; font-size: 16px; font-weight: 600;">
+                                <span style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text-secondary);">만원</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 나이와 배우자 -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div>
+                                <label style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; display: block;">🎂 나이</label>
+                                <input type="number" id="userAge" min="50" max="80" value="58" 
+                                       style="width: 100%; padding: 12px; border: 2px solid #E5E5E5; border-radius: 8px; font-size: 16px;">
+                            </div>
+                            <div>
+                                <label style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; display: block;">👫 배우자</label>
+                                <select id="spouseStatus" style="width: 100%; padding: 12px; border: 2px solid #E5E5E5; border-radius: 8px; font-size: 16px;">
+                                    <option value="yes">있음</option>
+                                    <option value="no">없음</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- 분석 버튼 -->
+                        <button type="button" onclick="generateSimpleAnalysis()" 
+                                style="background: var(--npay-green); color: white; border: none; border-radius: 8px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px;">
+                            내 맞춤 절세 전략 보기
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 맞춤 분석 결과 -->
+                <div id="customAnalysisResult" style="display: none; margin-top: 20px; padding: 20px; background: #F8F9FA; border-radius: 8px; border-left: 4px solid #7C3AED;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #7C3AED; margin-bottom: 12px;">📊 맞춤 분석 결과</h3>
+                    <div id="analysisContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 최종 CTA -->
+        <div class="final-cta">
+            <div class="final-cta-title">김페이님, 연 413만원 절약을 위한<br>최적의 수령 계획을 세워보세요</div>
+            <div class="final-cta-desc">
+                ✓ <strong>연금 나눠받기</strong>로 세금과 건보료를 아껴 <strong style="color: white;">연 413만원</strong> 절약<br>
+                ✓ <strong>퇴직금은 IRP로 수령</strong>해서 세금 3,360만원 절약 (일시금 대비)<br>
+                ✓ <strong>주택연금 활용</strong>으로 안정적인 추가 현금 확보
+            </div>
+            <button class="final-cta-button">김페이님 맞춤 실행 계획 받기</button>
+        </div>
+
+        <!-- Safe Area -->
+        <div class="safe-area"></div>
+    </div>
+
+    <script>
+        // 섹션 토글 기능
+        function toggleSection(element) {
+            const sectionCard = element.closest('.section-card');
+            if (sectionCard) {
+                const toggleButton = sectionCard.querySelector('.section-toggle-btn');
+
+                // 클래스를 토글하여 CSS 애니메이션 및 버튼 스타일을 변경합니다.
+                sectionCard.classList.toggle('section-collapsed');
+
+                // 새로운 상태를 확인하고 버튼 텍스트를 업데이트합니다.
+                const isCollapsed = sectionCard.classList.contains('section-collapsed');
+                if (toggleButton) {
+                    if (isCollapsed) {
+                        toggleButton.innerHTML = '더 자세히 보기 ▼';
+                    } else {
+                        toggleButton.innerHTML = '접기 ▲';
+                    }
+                }
+            }
+        }
+
+        // Q&A 토글 기능 (아코디언)
+        function toggleQA(questionElement) {
+            const currentItem = questionElement.closest('.qa-item');
+            
+            if (currentItem.classList.contains('open')) {
+                currentItem.classList.remove('open');
+            } else {
+                const allQaItems = document.querySelectorAll('.qa-item.open');
+                allQaItems.forEach(item => {
+                    item.classList.remove('open');
+                });
+                currentItem.classList.add('open');
+            }
+        }
+
+        // 페이지 로드 시 모든 섹션을 접은 상태로 시작
+        document.addEventListener('DOMContentLoaded', function() {
+            const collapsibleSections = document.querySelectorAll('.section-card.section-collapsed');
+            collapsibleSections.forEach(section => {
+                const content = section.querySelector('.section-content');
+                if (content) {
+                    content.style.transition = 'none';
+                    section.classList.add('section-collapsed');
+                    setTimeout(() => {
+                        content.style.transition = '';
+                    }, 10);
+                }
+            });
+        });
+
+
+        // 월 수령액 계산기
+        function calculateSimpleTax() {
+            const monthlyInput = document.getElementById('monthlyInput');
+            if (!monthlyInput) return;
+
+            const monthlyAmount = parseInt(monthlyInput.value);
+            const annualAmount = monthlyAmount * 12;
+            
+            let tax = 0;
+            if (annualAmount <= 1500) {
+                tax = Math.round(annualAmount * 0.055 * 1.1); // 5.5% + 지방소득세
+            } else {
+                tax = Math.round((1500 * 0.055 + (annualAmount - 1500) * 0.165) * 1.1);
+            }
+            
+            const isHealthRisk = annualAmount >= 2000;
+            const healthInsurance = isHealthRisk ? Math.round(annualAmount * 0.0343) : 0;
+            
+            const resultTaxDiv = document.getElementById('resultTax');
+            const resultMessageDiv = document.getElementById('resultMessage');
+            
+            resultTaxDiv.textContent = tax + '만원';
+            
+            let message = '';
+            if (monthlyAmount <= 125) {
+                message = `✅ <strong>최적 구간입니다!</strong><br>5.5% 저율이 적용되어 세금이 적어요.`;
+                resultTaxDiv.style.color = 'var(--npay-green)';
+            } else if (monthlyAmount <= 166) {
+                message = `⚠️ <strong>주의하세요!</strong><br>1,500만원을 넘어서 16.5% 고율이 적용됩니다.<br><strong>월 125만원으로 조정을 권장합니다.</strong>`;
+                resultTaxDiv.style.color = '#FF9800';
+            } else {
+                message = `🚨 <strong>위험 구간입니다!</strong><br>세금도 많고 건강보험료도 추가로 ${healthInsurance}만원 부담!<br><strong>즉시 수령액을 줄이세요.</strong>`;
+                resultTaxDiv.style.color = 'var(--error)';
+            }
+            
+            resultMessageDiv.innerHTML = message;
+            document.getElementById('calculationResult').style.display = 'block';
+        }
+
+        // 간단한 개인화 분석
+        function generateSimpleAnalysis() {
+            const totalAssets = parseInt(document.getElementById('totalAssets').value);
+            const age = parseInt(document.getElementById('userAge').value);
+            const hasSpouse = document.getElementById('spouseStatus').value === 'yes';
+            
+            const monthlyFromAssets = Math.round(totalAssets * 0.005);
+            
+            let taxRate = 0.055;
+            if (age >= 70 && age < 80) taxRate = 0.044;
+            else if (age >= 80) taxRate = 0.033;
+            
+            const currentAnnual = monthlyFromAssets * 12;
+            let currentTax = 0;
+            if (currentAnnual <= 1500) {
+                currentTax = Math.round(currentAnnual * taxRate * 1.1);
+            } else {
+                currentTax = Math.round((1500 * taxRate + (currentAnnual - 1500) * 0.165) * 1.1);
+            }
+            
+            const healthInsurance = currentAnnual >= 2000 ? Math.round(currentAnnual * 0.0343) : 0;
+            
+            let optimizedTax = 0;
+            let strategy = '';
+            if (hasSpouse) {
+                const splitMonthly = Math.min(125, monthlyFromAssets / 2);
+                const splitAnnual = splitMonthly * 12 * 2;
+                optimizedTax = Math.round(splitAnnual * taxRate * 1.1);
+                strategy = `부부 각각 월 ${splitMonthly}만원씩 수령`;
+            } else {
+                const optimizedMonthly = Math.min(125, monthlyFromAssets);
+                const optimizedAnnual = optimizedMonthly * 12;
+                optimizedTax = Math.round(optimizedAnnual * taxRate * 1.1);
+                strategy = `월 ${optimizedMonthly}만원 수령 + 주택연금 활용`;
+            }
+            
+            const totalSavings = (currentTax + healthInsurance) - optimizedTax;
+            
+            const resultHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div style="background: rgba(255, 85, 68, 0.05); border: 1px solid var(--error); border-radius: 8px; padding: 16px; text-align: center;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 4px;">현재 예상 부담</div>
+                        <div style="font-size: 18px; font-weight: 700; color: var(--error);">${currentTax + healthInsurance}만원</div>
+                    </div>
+                    <div style="background: rgba(0, 222, 90, 0.05); border: 1px solid var(--npay-green); border-radius: 8px; padding: 16px; text-align: center;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 4px;">최적화 후</div>
+                        <div style="font-size: 18px; font-weight: 700; color: var(--npay-green);">${optimizedTax}만원</div>
+                    </div>
+                </div>
+                
+                <div style="background: var(--npay-green); color: white; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">💰 절세 효과</div>
+                    <div style="font-size: 24px; font-weight: 800;">연 ${totalSavings}만원</div>
+                </div>
+                
+                <div style="background: white; border-radius: 8px; padding: 16px;">
+                    <h4 style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: var(--npay-green);">🎯 추천 전략</h4>
+                    <div style="font-size: 14px; line-height: 1.6; color: #666;">
+                        <strong>핵심:</strong> ${strategy}<br>
+                        <strong>효과:</strong> ${Math.round(totalSavings/currentTax*100)}% 세금 절약<br>
+                        <strong>실행:</strong> 금융기관에 수령 방식 변경 상담
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('customAnalysisResult').style.display = 'block';
+            document.getElementById('analysisContent').innerHTML = resultHTML;
+        }
+    </script>
+</body>
+</html>

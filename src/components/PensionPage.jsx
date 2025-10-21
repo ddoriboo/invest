@@ -3,6 +3,7 @@ import { Building2, TrendingUp, Calculator, ChevronDown, ChevronUp } from 'lucid
 import PensionLayerCard from './PensionLayerCard';
 import PensionSummaryGrid from './PensionSummaryGrid';
 import OptimizationComparisonCard from './OptimizationComparisonCard';
+import { useFinancial } from '../contexts/FinancialContext';
 import {
   calculateNationalPension,
   calculateDCPension,
@@ -17,23 +18,22 @@ import {
  * 연금 종합 플래너 페이지
  * 3개 HTML 디자인 참고 (20대/40대/55+)
  */
-const PensionPage = ({
-  currentInvestmentAssets = 112000000,
-  monthlyDividend = 1200000
-}) => {
-  // 연금 파라미터 (예시 데이터)
+const PensionPage = () => {
+  const { data } = useFinancial();
+
+  // 연금 파라미터 (Context에서 가져온 데이터)
   const [pensionParams, setPensionParams] = useState({
-    age: 35,
-    retirementAge: 60,
-    averageSalary: 4000000,
-    contributionYears: 10,
-    dcBalance: 20000000,
-    dcMonthlyContribution: 300000,
-    irpBalance: 5000000,
-    irpMonthlyContribution: 300000,
-    pensionSavingsBalance: 10000000,
-    pensionSavingsMonthly: 400000,
-    annualIncome: 50000000
+    age: data.personal.age,
+    retirementAge: data.personal.retirementAge,
+    averageSalary: data.pension.nationalPension.averageSalary,
+    contributionYears: data.pension.nationalPension.contributionYears,
+    dcBalance: data.pension.dc.currentBalance,
+    dcMonthlyContribution: data.pension.dc.monthlyContribution,
+    irpBalance: data.pension.irp.currentBalance,
+    irpMonthlyContribution: data.pension.irp.monthlyContribution,
+    pensionSavingsBalance: data.pension.pensionSavings.currentBalance,
+    pensionSavingsMonthly: data.pension.pensionSavings.monthlyContribution,
+    annualIncome: data.personal.monthlyIncome * 12
   });
 
   const [expandedSections, setExpandedSections] = useState({
@@ -78,8 +78,8 @@ const PensionPage = ({
     const retirementIncome = calculateRetirementIncome({
       age: pensionParams.age,
       retirementAge: pensionParams.retirementAge,
-      currentAssets: currentInvestmentAssets,
-      monthlyInvestment: 800000,
+      currentAssets: data.assets.totalInvestmentAssets,
+      monthlyInvestment: data.assets.monthlyInvestment,
       expectedReturn: 8.0,
       dividendYield: 4.5,
       nationalPension,
@@ -101,7 +101,7 @@ const PensionPage = ({
       retirementIncome,
       optimized
     };
-  }, [pensionParams, currentInvestmentAssets]);
+  }, [pensionParams, data]);
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({

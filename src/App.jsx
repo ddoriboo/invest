@@ -3,6 +3,7 @@ import InvestmentDashboard from './InvestmentDashboard';
 import StockIndexCard from './components/StockIndexCard';
 import DividendCalendar from './components/DividendCalendar';
 import PensionPage from './components/PensionPage';
+import { FinancialProvider } from './contexts/FinancialContext';
 import { ChevronLeft, ChevronRight, BarChart3, Zap, TrendingUp, AlertTriangle, Target, DollarSign, X, ArrowRight, Bell, CheckCircle, Building2 } from 'lucide-react';
 
 // 좌측 사이드바 컴포넌트
@@ -650,38 +651,40 @@ const App = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* 좌측 사이드바 */}
-      <div className={`transition-all duration-300 ${
-        leftSidebarCollapsed ? 'w-16' : 'w-[180px]'
-      }`}>
-        <Sidebar
-          activeMenu={activeMenu}
-          setActiveMenu={setActiveMenu}
-          isCollapsed={leftSidebarCollapsed}
-          setIsCollapsed={setLeftSidebarCollapsed}
-        />
-      </div>
+    <FinancialProvider>
+      <div className="flex h-screen bg-gray-50">
+        {/* 좌측 사이드바 */}
+        <div className={`transition-all duration-300 ${
+          leftSidebarCollapsed ? 'w-16' : 'w-[180px]'
+        }`}>
+          <Sidebar
+            activeMenu={activeMenu}
+            setActiveMenu={setActiveMenu}
+            isCollapsed={leftSidebarCollapsed}
+            setIsCollapsed={setLeftSidebarCollapsed}
+          />
+        </div>
 
-      {/* 중앙 메인 콘텐츠 */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
-        <div className="max-w-full mx-auto">
-          {renderContent()}
+        {/* 중앙 메인 콘텐츠 */}
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <div className="max-w-full mx-auto">
+            {renderContent()}
+          </div>
+        </div>
+
+        {/* 우측 시장 현황 패널 */}
+        <div className={`transition-all duration-300 ${
+          rightPanelCollapsed ? 'w-12' : 'w-[280px]'
+        }`}>
+          <MarketPanel
+            isCollapsed={rightPanelCollapsed}
+            setIsCollapsed={setRightPanelCollapsed}
+            focusedNudgeId={focusedNudgeId}
+            setFocusedNudgeId={setFocusedNudgeId}
+          />
         </div>
       </div>
-
-      {/* 우측 시장 현황 패널 */}
-      <div className={`transition-all duration-300 ${
-        rightPanelCollapsed ? 'w-12' : 'w-[280px]'
-      }`}>
-        <MarketPanel
-          isCollapsed={rightPanelCollapsed}
-          setIsCollapsed={setRightPanelCollapsed}
-          focusedNudgeId={focusedNudgeId}
-          setFocusedNudgeId={setFocusedNudgeId}
-        />
-      </div>
-    </div>
+    </FinancialProvider>
   );
 };
 

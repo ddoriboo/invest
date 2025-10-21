@@ -2,14 +2,21 @@ import React, { useState, useMemo } from 'react';
 import { Target, TrendingUp, Calendar, AlertCircle, CheckCircle, Clock, Zap, Settings, BarChart3, Calculator } from 'lucide-react';
 import { getDividendScheduleData } from '../utils/dividendData';
 import InteractiveGoalSimulator from './InteractiveGoalSimulator';
+import { useFinancial } from '../contexts/FinancialContext';
 
 const GoalTrackingDashboard = ({
   goals = [],
-  currentPortfolio = {},
   onEditGoal = () => {},
   onDeleteGoal = () => {},
   className = ""
 }) => {
+  const { data } = useFinancial();
+
+  // Context에서 필요한 데이터 구성
+  const currentPortfolio = {
+    totalAsset: data.assets.totalInvestmentAssets,
+    monthlyDividend: data.income.monthlyDividend
+  };
   const [selectedTimeframe, setSelectedTimeframe] = useState('1Y');
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
@@ -338,8 +345,8 @@ const GoalTrackingDashboard = ({
           }}
           goalType={simulatorGoal.type}
           initialParams={{
-            currentAsset: currentPortfolio.totalAsset || 112000000,
-            monthlyInvestment: simulatorGoal.monthlyInvestment || 800000,
+            currentAsset: currentPortfolio.totalAsset,
+            monthlyInvestment: simulatorGoal.monthlyInvestment || data.assets.monthlyInvestment,
             targetAsset: simulatorGoal.targetAmount,
             targetMonthlyDividend: simulatorGoal.targetAmount,
             dividendYield: 4.5,

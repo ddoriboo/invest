@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Target, TrendingUp, Calculator, Brain, Check
 import { getDividendScheduleData } from '../utils/dividendData';
 import ScenarioComparisonChart from './ScenarioComparisonChart';
 import { simulateMultipleScenarios, calculateRequiredMonthlyInvestment } from '../utils/simulationEngine';
+import { useFinancial } from '../contexts/FinancialContext';
 
 // 목표 계산 엔진
 const GoalCalculationEngine = {
@@ -446,7 +447,7 @@ const Step2PersonalInfo = ({ personalInfo, setPersonalInfo, onNext, onPrev }) =>
   );
 };
 
-const Step3GoalSetting = ({ goalType, personalInfo, goalSettings, setGoalSettings, onNext, onPrev, currentAsset = 112000000 }) => {
+const Step3GoalSetting = ({ goalType, personalInfo, goalSettings, setGoalSettings, onNext, onPrev, currentAsset, monthlyDividend, currentPortfolio, monthlyDividendSchedule }) => {
   const handleGoalChange = (field, value) => {
     setGoalSettings(prev => ({ ...prev, [field]: value }));
   };
@@ -668,12 +669,12 @@ const Step3GoalSetting = ({ goalType, personalInfo, goalSettings, setGoalSetting
   );
 };
 
-const Step4Analysis = ({ goalType, personalInfo, goalSettings, onNext, onPrev, onComplete }) => {
+const Step4Analysis = ({ goalType, personalInfo, goalSettings, onNext, onPrev, onComplete, currentAsset, monthlyDividend }) => {
   // 목표 달성 가능성 분석
   const analysis = useMemo(() => {
     if (goalType === 'asset') {
       return GoalCalculationEngine.calculateAssetGoal(
-        112000000, // 현재 자산
+        currentAsset,
         goalSettings.targetAmount,
         personalInfo.monthlyInvestment,
         goalSettings.expectedReturn,
@@ -681,7 +682,7 @@ const Step4Analysis = ({ goalType, personalInfo, goalSettings, onNext, onPrev, o
       );
     } else {
       return GoalCalculationEngine.calculateDividendGoal(
-        1200000, // 현재 월 배당
+        monthlyDividend,
         goalSettings.targetAmount,
         personalInfo.monthlyInvestment,
         4.5, // 평균 배당률
@@ -689,19 +690,19 @@ const Step4Analysis = ({ goalType, personalInfo, goalSettings, onNext, onPrev, o
         goalSettings.timeHorizon
       );
     }
-  }, [goalType, goalSettings, personalInfo]);
+  }, [goalType, goalSettings, personalInfo, currentAsset, monthlyDividend]);
 
   // AI 분석
   const aiAnalysis = useMemo(() => {
     return AIRecommendationEngine.analyzeCurrentSituation({
-      currentAsset: 112000000,
-      monthlyDividend: 1200000,
+      currentAsset: currentAsset,
+      monthlyDividend: monthlyDividend,
       monthlyIncome: personalInfo.monthlyIncome,
       age: personalInfo.age,
       investmentExperience: personalInfo.investmentExperience,
       riskTolerance: personalInfo.riskTolerance
     });
-  }, [personalInfo]);
+  }, [personalInfo, currentAsset, monthlyDividend]);
 
   return (
     <div className="space-y-6">
@@ -835,19 +836,28 @@ const Step4Analysis = ({ goalType, personalInfo, goalSettings, onNext, onPrev, o
 };
 
 // 메인 마법사 컴포넌트
-const IntelligentGoalWizard = ({ isOpen, onClose, currentAsset, monthlyDividend, onGoalSet, currentPortfolio = {}, onGoalCreated = () => {} }) => {
+const IntelligentGoalWizard = ({ isOpen, onClose, onGoalSet, onGoalCreated = () => {} }) => {
+  const { data } = useFinancial();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedGoalType, setSelectedGoalType] = useState('');
   const [personalInfo, setPersonalInfo] = useState({
-    age: '',
-    monthlyIncome: '',
-    monthlyInvestment: '',
+    age: data.personal.age || '',
+    monthlyIncome: data.personal.monthlyIncome || '',
+    monthlyInvestment: data.assets.monthlyInvestment || '',
     investmentExperience: '',
-    riskTolerance: ''
+    riskTolerance: data.personal.riskProfile || ''
   });
 
   // 배당 데이터 가져오기
   const { calendarData, monthlyDividendSchedule } = getDividendScheduleData();
+
+  // Context에서 필요한 데이터 추출
+  const currentAsset = data.assets.totalInvestmentAssets;
+  const monthlyDividend = data.income.monthlyDividend;
+  const currentPortfolio = {
+    totalAsset: data.assets.totalInvestmentAssets,
+    monthlyDividend: data.income.monthlyDividend
+  };
   const [goalSettings, setGoalSettings] = useState({
     targetAmount: '',
     timeHorizon: 10,
@@ -973,6 +983,10 @@ const IntelligentGoalWizard = ({ isOpen, onClose, currentAsset, monthlyDividend,
             onNext={handleNext}
             onPrev={handlePrev}
             onComplete={handleComplete}
+            currentAsset={currentAsset}
+            monthlyDividend={monthlyDividend}
+            currentPortfolio={currentPortfolio}
+            monthlyDividendSchedule={monthlyDividendSchedule}
           />
         </div>
       </div>

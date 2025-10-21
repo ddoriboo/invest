@@ -6,6 +6,8 @@ import GoalTrackingDashboard from './components/GoalTrackingDashboard';
 import NudgeCarousel from './components/NudgeCarousel';
 import ThreeLayerPensionCard from './components/ThreeLayerPensionCard';
 import PensionDashboard from './components/PensionDashboard';
+import SettingsModal from './components/SettingsModal';
+import { useFinancial } from './contexts/FinancialContext';
 
 // 공통 데이터 및 유틸리티
 const formatCurrency = (amount) => {
@@ -17,7 +19,7 @@ const formatPercentage = (rate) => {
 };
 
 // 1. 헤더 모듈
-const Header = ({ timeRange, setTimeRange, onOpenPension = () => {} }) => {
+const Header = ({ timeRange, setTimeRange, onOpenPension = () => {}, onOpenSettings = () => {} }) => {
   return (
     <div className="flex justify-between items-center mb-10">
       <h1 className="text-display">내 자산 현황</h1>
@@ -41,7 +43,11 @@ const Header = ({ timeRange, setTimeRange, onOpenPension = () => {} }) => {
         >
           <Building2 className="w-6 h-6" style={{color: 'var(--accent-blue)'}} />
         </button>
-        <button className="p-3 card-premium hover:scale-105 transition-transform">
+        <button
+          onClick={onOpenSettings}
+          className="p-3 card-premium hover:scale-105 transition-transform"
+          title="설정"
+        >
           <Settings className="w-6 h-6" style={{color: 'var(--text-secondary)'}} />
         </button>
       </div>
@@ -705,6 +711,9 @@ const AssetTrendBox = ({ assetTrendData, nudgeData }) => {
 
 // 메인 대시보드 컴포넌트
 const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) => {
+  // Context에서 데이터 가져오기
+  const { data } = useFinancial();
+
   const [timeRange, setTimeRange] = useState('monthly');
   const [activeView, setActiveView] = useState('main');
   const [includeRealEstate, setIncludeRealEstate] = useState(false);
@@ -716,6 +725,7 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
   const [showGoalWizard, setShowGoalWizard] = useState(false);
   const [isPensionDashboardOpen, setIsPensionDashboardOpen] = useState(false);
   const [isPensionCardCollapsed, setIsPensionCardCollapsed] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [userGoals, setUserGoals] = useState([
     {
       id: 'goal-1',
@@ -767,15 +777,16 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
   const marketIndices = {
     kospi: { value: 2645.85, change: +12.3, changePercent: +0.47 },
     sp500: { value: 4783.45, change: +23.8, changePercent: +0.50 },
-    currentMonthlyIncome: 4500000
+    currentMonthlyIncome: data.personal.monthlyIncome
   };
 
+  // Context 데이터로 portfolioData 생성
   const portfolioDataWithoutRealEstate = [
-    { name: '국내주식', value: 45000000, color: '#3B82F6' },
-    { name: '해외주식', value: 32000000, color: '#10B981' },
-    { name: 'ETF', value: 15000000, color: '#F59E0B' },
-    { name: '채권', value: 8000000, color: '#EF4444' },
-    { name: '예금', value: 12000000, color: '#8B5CF6' }
+    { name: '국내주식', value: data.assets.stocks.domestic, color: '#3B82F6' },
+    { name: '해외주식', value: data.assets.stocks.overseas, color: '#10B981' },
+    { name: 'ETF', value: data.assets.etf, color: '#F59E0B' },
+    { name: '채권', value: data.assets.bonds, color: '#EF4444' },
+    { name: '예금', value: data.assets.cash, color: '#8B5CF6' }
   ];
 
   const portfolioDataWithRealEstate = [
@@ -785,15 +796,15 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
 
   const portfolioData = includeRealEstate ? portfolioDataWithRealEstate : portfolioDataWithoutRealEstate;
   const totalAssets = portfolioData.reduce((sum, item) => sum + item.value, 0);
-  
+
   const returnData = {
     daily: { return: 180000, rate: 0.16 },
     monthly: { return: 3200000, rate: 2.8 },
     yearly: { return: 15800000, rate: 16.4 }
   };
-  
+
   const currentReturn = returnData[returnPeriod];
-  const monthlyDividend = 1200000;
+  const monthlyDividend = data.income.monthlyDividend;
 
   const monthlyRealizedData = [
     { month: '1월', realizedGain: -120000 },
@@ -967,6 +978,7 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
           timeRange={timeRange}
           setTimeRange={setTimeRange}
           onOpenPension={() => setIsPensionDashboardOpen(true)}
+          onOpenSettings={() => setIsSettingsOpen(true)}
         />
 
         {/* 넛지 캐러셀 */}
@@ -1769,7 +1781,6 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
 
         <GoalTrackingDashboard
           goals={userGoals}
-          currentPortfolio={currentPortfolio}
           onEditGoal={handleGoalEdit}
           onDeleteGoal={handleGoalDelete}
         />
@@ -1786,13 +1797,12 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
       {activeView === 'realized' && <RealizedView />}
 
       {/* 목표 설정 위자드 모달 */}
-      {showGoalWizard && (
-        <IntelligentGoalWizard
-          currentPortfolio={currentPortfolio}
-          onGoalCreated={handleGoalCreated}
-          onClose={() => setShowGoalWizard(false)}
-        />
-      )}
+      <IntelligentGoalWizard
+        isOpen={showGoalWizard}
+        onGoalSet={handleGoalCreated}
+        onGoalCreated={handleGoalCreated}
+        onClose={() => setShowGoalWizard(false)}
+      />
 
       {/* 연금 종합 플래너 모달 */}
       <PensionDashboard
@@ -1800,6 +1810,12 @@ const InvestmentDashboard = ({ activeMenu, setActiveMenu, setFocusedNudgeId }) =
         onClose={() => setIsPensionDashboardOpen(false)}
         currentInvestmentAssets={totalAssets}
         monthlyDividend={monthlyDividend}
+      />
+
+      {/* 설정 모달 */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </div>
   );
